@@ -1,0 +1,15 @@
+﻿body 
+{
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; 
+  font-size: 14px;
+}
+table 
+{
+  border-collapse:collapse;
+  font-size: 14px;
+}
+th,td 
+{
+  border: 1px solid black; text-align: center; margin: 2px;
+}
+

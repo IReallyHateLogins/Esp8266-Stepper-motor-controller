@@ -39,7 +39,7 @@ void StepperRun() {
               if (rotable.current == rotable.steps) {
                 rotable.state = Ready;
                 rotable.mode = None;
-                Answer(parse.answer);
+                DelayedResponse();
               }
               break;
           }
@@ -75,7 +75,7 @@ void StepperRun() {
               if (rotable.current == rotable.steps) {
                 rotable.state = Ready;
                 rotable.mode = None;
-                Answer(parse.answer);
+                DelayedResponse();
               }
               break;
           }
@@ -114,7 +114,7 @@ void StepperRun() {
               if (rotable.current == rotable.steps) {
                 rotable.state = Ready;
                 rotable.mode = None;
-                Answer(parse.answer);
+                DelayedResponse();
               }
               break;
           }
@@ -137,9 +137,6 @@ void StepperRun() {
       rotable.stepIsHigh = HIGH;
       break;
       //
-      case None:
-      if (rotable.state != Ready)
-        Answer("Err 0x44 Init Err");
     }
 }
 

@@ -1,67 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <FS.h>
 
-//
-
-//States for rotable
-enum StateRotable{
-  Ready = 0,
-  Starting = 1,
-  Running = 2,  
-  Finishing = 3,
-  Off = 4,
-  Error = 5
-};
-
-//Rotation modes
-enum ModeRotable{
-  None = 0,
-  Long = 1,
-  Fast = 2,
-  Infinite = 3
-};
-
-//Mode for device
-enum Mode{
-  Normal = 0,
-  Echo = 1
-};
-
-struct Parse{
-  unsigned int crc[6];//crc for inputed txt
-  byte count = 0;//txt count
-  String input, prev_input, error, answer;
-}parse;
-
-struct Device{
-  Mode mode;
-  const String id = "Prefpro Rotable v.0.5";
-  const String version = "0.0.5.6";
-  //const unsigned int baudRate[] = {9600 - 0x290f, 19200 - 0x293a, 38400 - 0x2b3f, 57600 - 0x2d34, 115200 - 0x3107};
-  unsigned long baudRate;
-  bool interrupt;//internal interrupts on/off state
-}device;
-
-
-struct Rotable{
-  const String version = "0.0.5.1";
-  ModeRotable mode;
-  bool direction, stepIsHigh;
-  unsigned long N1, N2, ti, tiLow, sti, current, steps, stepsPerCircle, tDelay;
-  float koeff,speed,speedUp;
-  StateRotable state; 
-}rotable;
-
-
-
-//const byte LED = A2;
-
-const byte STEPPIN = 14; //STEP 
-const byte DIRPIN  = 15; //DIRECTION
-const byte ENBPIN = 13; //ENABLE
-
-//
-
 const byte BUTTON = 4; //pin for button
 const byte LED = 2; //pin for button
 
@@ -158,17 +97,9 @@ bool ButtonPressed(){
 
 void setup() {  
   pinMode(LED,OUTPUT);
-  pinMode(BUTTON,INPUT);  
-  pinMode(STEPPIN, OUTPUT); 
-  pinMode(DIRPIN, OUTPUT);
-  pinMode(ENBPIN, OUTPUT);
-
-  DeviceInit();
+  pinMode(BUTTON,INPUT);
   
   digitalWrite(LED,HIGH);
-  digitalWrite(ENBPIN, LOW);
-  digitalWrite(STEPPIN, LOW); 
-  digitalWrite(DIRPIN, LOW);
 
   
   SPIFFS.begin();

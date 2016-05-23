@@ -1,6 +1,15 @@
 #include <ESP8266WiFi.h>
 #include <FS.h>
 
+void DeviceInit();
+bool ButtonPressed();
+void DelayedResponse();
+void stepperInit(float, float , long);
+void WiFiSetup(bool);
+void InterruptSetup(unsigned long);
+void parseWorkCommand(String);
+void RotableInit();
+void ToStep();
 //
 
 //States for rotable
@@ -27,14 +36,11 @@ enum Mode{
   Echo = 1
 };
 
-struct Parse{
-  String input, prev_input, error, answer;
-}parse;
-
 struct Device{
   Mode mode;
   const String id = "Prefpro Rotable v.0.5";
   const String version = "0.0.5.6";
+  String dRes;
 }device;
 
 
@@ -90,8 +96,8 @@ void setup() {
   SPIFFS.begin();
 
   Serial.begin(9600);
-  Dir dir = SPIFFS.openDir("/core");
-  Serial.println("/core");
+  Dir dir = SPIFFS.openDir("/api");
+  Serial.println("/api");
   while (dir.next()) {
     Serial.print(dir.fileName());
     File f = dir.openFile("r");
@@ -122,7 +128,8 @@ void setup() {
   delay(100);
   WiFiSetup(ButtonPressed());
   digitalWrite(LED,LOW);
-  }
+  InterruptSetup(5);
+}
 
 
 
